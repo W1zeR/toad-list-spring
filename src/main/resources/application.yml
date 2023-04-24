@@ -1,0 +1,14 @@
+server:
+  port: 8081
+  error:
+    include-message: always
+    include-binding-errors: always
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/toadlist
+    username: me
+    password: 123
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
