@@ -1,8 +1,8 @@
 package main.com.w1zer.model;
 
 public class ProfilePostDto {
-    private String login;
-    private String password;
+    private final String login;
+    private final String password;
 
     public ProfilePostDto(String login, String password) {
         this.login = login;
@@ -13,15 +13,7 @@ public class ProfilePostDto {
         return login;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
     public String getPassword() {
         return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }

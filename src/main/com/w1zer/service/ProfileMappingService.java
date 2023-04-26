@@ -30,6 +30,4 @@ public class ProfileMappingService {
         }
         return profileGetDtoList;
     }
-
-
 }

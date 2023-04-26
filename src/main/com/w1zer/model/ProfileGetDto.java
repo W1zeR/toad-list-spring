@@ -2,8 +2,8 @@ package main.com.w1zer.model;
 
 public class ProfileGetDto {
 
-    private Long id;
-    private String login;
+    private final Long id;
+    private final String login;
 
     public ProfileGetDto(Long id, String login) {
         this.id = id;
@@ -14,15 +14,7 @@ public class ProfileGetDto {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getLogin() {
         return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
     }
 }

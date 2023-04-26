@@ -6,6 +6,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 @Repository
@@ -16,27 +18,24 @@ public class ProfileRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    private Profile rowMapper(ResultSet rs, int rowNum) throws SQLException {
+        return new Profile(
+                rs.getLong("id"),
+                rs.getString("login"),
+                rs.getString("password"));
+    }
+
     public List<Profile> getAll() {
         String SELECT_ALL_QUERY = "SELECT id, login, password FROM profile";
 
-        return jdbcTemplate.query(
-                SELECT_ALL_QUERY,
-                (rs, rowNum) -> new Profile(
-                        rs.getLong("id"),
-                        rs.getString("login"),
-                        rs.getString("password")));
+        return jdbcTemplate.query(SELECT_ALL_QUERY, this::rowMapper);
     }
 
     public Profile getById(Long id) {
         String SELECT_BY_ID_QUERY = "SELECT id, login, password FROM profile WHERE id = ?";
 
         try {
-            return jdbcTemplate.queryForObject(
-                    SELECT_BY_ID_QUERY,
-                    (rs, rowNum) -> new Profile(
-                            rs.getLong("id"),
-                            rs.getString("login"),
-                            rs.getString("password")), id);
+            return jdbcTemplate.queryForObject(SELECT_BY_ID_QUERY, this::rowMapper, id);
         } catch (EmptyResultDataAccessException e) {
             throw new NotFoundException("Profile with id %d not found".formatted(id));
         }
@@ -46,12 +45,7 @@ public class ProfileRepository {
         String SELECT_BY_LOGIN_QUERY = "SELECT id, login, password FROM profile WHERE login = ?";
 
         try {
-            return jdbcTemplate.queryForObject(
-                    SELECT_BY_LOGIN_QUERY,
-                    (rs, rowNum) -> new Profile(
-                            rs.getLong("id"),
-                            rs.getString("login"),
-                            rs.getString("password")), login);
+            return jdbcTemplate.queryForObject(SELECT_BY_LOGIN_QUERY, this::rowMapper, login);
         } catch (EmptyResultDataAccessException e) {
             throw new NotFoundException("Profile with login %s not found".formatted(login));
         }
