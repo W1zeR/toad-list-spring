@@ -16,20 +16,20 @@ public class ToadService {
         this.toadMappingService = toadMappingService;
     }
 
-    public List<ToadGetDto> getAll(){
-        return toadMappingService.mapToToadGetDtoList(toadRepository.getAll());
+    public List<ToadResponse> getAll() {
+        return toadMappingService.mapToToadResponseList(toadRepository.getAll());
     }
 
-    public ToadGetDto getById(Long id){
-        return toadMappingService.mapToToadGetDto(toadRepository.getById(id));
+    public ToadResponse getById(Long id) {
+        return toadMappingService.mapToToadResponse(toadRepository.getById(id));
     }
 
-    public List<ToadGetDto> getByIdProfile(Long idProfile){
-        return toadMappingService.mapToToadGetDtoList(toadRepository.getByIdProfile(idProfile));
+    public List<ToadResponse> getByIdProfile(Long idProfile) {
+        return toadMappingService.mapToToadResponseList(toadRepository.getByIdProfile(idProfile));
     }
 
-    public void insert(ToadPostDto toadPostDto) {
-        toadRepository.insert(toadMappingService.mapToToad(toadPostDto));
+    public void insert(ToadRequest toadRequest) {
+        toadRepository.insert(toadMappingService.mapToToad(toadRequest));
     }
 
     public void delete(Long id) {
@@ -37,8 +37,8 @@ public class ToadService {
         toadRepository.delete(id);
     }
 
-    public void update(Long id, ToadPatchDto toadPatchDto){
+    public void update(Long id, ToadRequest toadRequest) {
         toadRepository.getById(id); // Checking if toad exists
-        toadRepository.update(toadMappingService.mapToToad(id, toadPatchDto));
+        toadRepository.update(toadMappingService.mapToToad(id, toadRequest));
     }
 }

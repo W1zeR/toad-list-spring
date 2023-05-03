@@ -1,18 +1,16 @@
-package main.com.w1zer.entity;
+package main.com.w1zer.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.sql.Date;
 
 @Data
 @Builder
-@AllArgsConstructor
-public class Toad {
-    private final Long id;
-
+public class ToadRequest {
+    @NotBlank(message = "Name can't be blank")
     private final String name;
 
     private final String type;
@@ -21,9 +19,12 @@ public class Toad {
 
     private final BigDecimal length;
 
+    @PastOrPresent(message = "Birthday must be in the past or present")
     private final Date birthday;
 
     private final String description;
 
+    @NotNull(message = "idProfile can't be null")
+    @Positive(message = "idProfile must be positive number")
     private final Long idProfile;
 }

@@ -1,33 +1,48 @@
 package main.com.w1zer.service;
 
 import main.com.w1zer.entity.Profile;
-import main.com.w1zer.model.ProfileGetDto;
-import main.com.w1zer.model.ProfilePatchDto;
-import main.com.w1zer.model.ProfilePostDto;
+import main.com.w1zer.model.ProfileResponse;
+import main.com.w1zer.model.ProfileRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProfileMappingService {
-    public ProfileGetDto mapToProfileGetDto(Profile profile){
-        return new ProfileGetDto(profile.getId(), profile.getLogin());
+    public ProfileResponse mapToProfileResponse(Profile profile) {
+        return ProfileResponse
+                .builder()
+                .id(profile.getId())
+                .login(profile.getLogin())
+                .build();
     }
 
-    public Profile mapToProfile(ProfilePostDto profilePostDto){
-        return new Profile(null, profilePostDto.getLogin(), profilePostDto.getPassword());
+    public Profile mapToProfile(ProfileRequest profileRequest) {
+        return Profile
+                .builder()
+                .login(profileRequest.getLogin())
+                .password(profileRequest.getPassword())
+                .build();
     }
 
-    public Profile mapToProfile(Long id, ProfilePatchDto profilePatchDto){
-        return new Profile(id, profilePatchDto.getLogin(), profilePatchDto.getPassword());
+    public Profile mapToProfile(Long id, ProfileRequest profileRequest) {
+        return Profile
+                .builder()
+                .id(id)
+                .login(profileRequest.getLogin())
+                .password(profileRequest.getPassword())
+                .build();
     }
 
-    public List<ProfileGetDto> mapToProfileGetDtoList(List<Profile> profiles){
-        List<ProfileGetDto> profileGetDtoList = new ArrayList<>();
-        for (Profile profile: profiles){
-            profileGetDtoList.add(mapToProfileGetDto(profile));
-        }
-        return profileGetDtoList;
+    public List<ProfileResponse> mapToProfileResponseList(List<Profile> profiles) {
+        return profiles
+                .stream()
+                .map(this::mapToProfileResponse)
+                .collect(Collectors.toList());
+    }
+
+    public List<ProfileResponse> mapToProfileResponseList(Profile profile) {
+        return List.of(mapToProfileResponse(profile));
     }
 }

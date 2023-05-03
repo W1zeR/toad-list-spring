@@ -1,6 +1,5 @@
-package main.com.w1zer.entity;
+package main.com.w1zer.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
@@ -9,8 +8,7 @@ import java.sql.Date;
 
 @Data
 @Builder
-@AllArgsConstructor
-public class Toad {
+public class ToadResponse {
     private final Long id;
 
     private final String name;

@@ -2,6 +2,7 @@ package main.com.w1zer.repository;
 
 import main.com.w1zer.entity.Toad;
 import main.com.w1zer.exception.NotFoundException;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -60,8 +61,12 @@ public class ToadRepository {
         String INSERT_QUERY = "INSERT INTO toad (name, type, weight, length, birthday, description, id_profile) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        jdbcTemplate.update(INSERT_QUERY, toad.getName(), toad.getType(), toad.getWeight(), toad.getLength(),
-                toad.getBirthday(), toad.getDescription(), toad.getIdProfile());
+        try {
+            jdbcTemplate.update(INSERT_QUERY, toad.getName(), toad.getType(), toad.getWeight(), toad.getLength(),
+                    toad.getBirthday(), toad.getDescription(), toad.getIdProfile());
+        } catch (DataAccessException e) {
+            throw new NotFoundException("Profile with id %d not found".formatted(toad.getIdProfile()));
+        }
     }
 
     public void delete(Long id) {
@@ -71,10 +76,14 @@ public class ToadRepository {
     }
 
     public void update(Toad toad) {
-        String UPDATE_QUERY =
-                "UPDATE toad SET name = ?, type = ?, weight = ?, length = ?, birthday = ?, description = ? WHERE id = ?";
+        String UPDATE_QUERY = "UPDATE toad SET name = ?, type = ?, weight = ?, length = ?, birthday = ?, " +
+                "description = ?, id_profile = ? WHERE id = ?";
 
-        jdbcTemplate.update(UPDATE_QUERY, toad.getName(), toad.getType(), toad.getWeight(), toad.getLength(),
-                toad.getBirthday(), toad.getDescription(), toad.getId());
+        try {
+            jdbcTemplate.update(UPDATE_QUERY, toad.getName(), toad.getType(), toad.getWeight(), toad.getLength(),
+                    toad.getBirthday(), toad.getDescription(), toad.getIdProfile(), toad.getId());
+        } catch (DataAccessException e) {
+            throw new NotFoundException("Profile with id %d not found".formatted(toad.getIdProfile()));
+        }
     }
 }

@@ -1,15 +1,16 @@
 package main.com.w1zer.controller;
 
-import main.com.w1zer.model.ProfileGetDto;
-import main.com.w1zer.model.ProfilePatchDto;
-import main.com.w1zer.model.ProfilePostDto;
+import main.com.w1zer.model.ProfileResponse;
+import main.com.w1zer.model.ProfileRequest;
 import main.com.w1zer.service.ProfileService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@RequestMapping("/profiles")
 public class ProfileController {
 
     private final ProfileService profileService;
@@ -18,29 +19,29 @@ public class ProfileController {
         this.profileService = profileService;
     }
 
-    @GetMapping("/profiles")
-    public List<ProfileGetDto> getAll(){
-        return profileService.getAll();
+    @GetMapping("/")
+    public List<ProfileResponse> getAll(@RequestParam(required = false) String login) {
+        return profileService.getAll(login);
     }
 
-    @GetMapping("/profiles/{id}")
-    public ProfileGetDto getById(@PathVariable Long id) {
+    @GetMapping("/{id}/")
+    public ProfileResponse getById(@PathVariable Long id) {
         return profileService.getById(id);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/profiles")
-    public void insert(@RequestBody ProfilePostDto profilePostDto) {
-        profileService.insert(profilePostDto);
+    @PostMapping("/")
+    public void insert(@Valid @RequestBody ProfileRequest profileRequest) {
+        profileService.insert(profileRequest);
     }
 
-    @DeleteMapping("/profiles/{id}")
+    @DeleteMapping("/{id}/")
     public void delete(@PathVariable Long id) {
         profileService.delete(id);
     }
 
-    @PatchMapping("/profiles/{id}")
-    public void update(@PathVariable Long id, @RequestBody ProfilePatchDto profilePatchDto){
-        profileService.update(id, profilePatchDto);
+    @PatchMapping("/{id}/")
+    public void update(@PathVariable Long id, @Valid @RequestBody ProfileRequest profileRequest) {
+        profileService.update(id, profileRequest);
     }
 }

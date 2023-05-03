@@ -1,38 +1,60 @@
 package main.com.w1zer.service;
 
 import main.com.w1zer.entity.Toad;
-import main.com.w1zer.model.ToadGetDto;
-import main.com.w1zer.model.ToadPatchDto;
-import main.com.w1zer.model.ToadPostDto;
+import main.com.w1zer.model.ToadResponse;
+import main.com.w1zer.model.ToadRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ToadMappingService {
-    public ToadGetDto mapToToadGetDto(Toad toad){
-        return new ToadGetDto(toad.getId(), toad.getName(), toad.getType(), toad.getWeight(), toad.getLength(),
-                toad.getBirthday(), toad.getDescription(), toad.getIdProfile());
+    public ToadResponse mapToToadResponse(Toad toad) {
+        return ToadResponse
+                .builder()
+                .id(toad.getId())
+                .name(toad.getName())
+                .type(toad.getType())
+                .weight(toad.getWeight())
+                .length(toad.getLength())
+                .birthday(toad.getBirthday())
+                .description(toad.getDescription())
+                .idProfile(toad.getIdProfile())
+                .build();
     }
 
-    public Toad mapToToad(ToadPostDto toadPostDto){
-        return new Toad(null, toadPostDto.getName(), toadPostDto.getType(), toadPostDto.getWeight(),
-                toadPostDto.getLength(), toadPostDto.getBirthday(), toadPostDto.getDescription(),
-                toadPostDto.getIdProfile());
+    public Toad mapToToad(ToadRequest toadRequest) {
+        return Toad
+                .builder()
+                .name(toadRequest.getName())
+                .type(toadRequest.getType())
+                .weight(toadRequest.getWeight())
+                .length(toadRequest.getLength())
+                .birthday(toadRequest.getBirthday())
+                .description(toadRequest.getDescription())
+                .idProfile(toadRequest.getIdProfile())
+                .build();
     }
 
-    public Toad mapToToad(Long id, ToadPatchDto toadPatchDto) {
-        return new Toad(id, toadPatchDto.getName(), toadPatchDto.getType(), toadPatchDto.getWeight(),
-                toadPatchDto.getLength(), toadPatchDto.getBirthday(), toadPatchDto.getDescription(),
-                toadPatchDto.getIdProfile());
+    public Toad mapToToad(Long id, ToadRequest toadRequest) {
+        return Toad
+                .builder()
+                .id(id)
+                .name(toadRequest.getName())
+                .type(toadRequest.getType())
+                .weight(toadRequest.getWeight())
+                .length(toadRequest.getLength())
+                .birthday(toadRequest.getBirthday())
+                .description(toadRequest.getDescription())
+                .idProfile(toadRequest.getIdProfile())
+                .build();
     }
 
-    public List<ToadGetDto> mapToToadGetDtoList(List<Toad> toads){
-        List<ToadGetDto> toadGetDtoList = new ArrayList<>();
-        for (Toad toad: toads){
-            toadGetDtoList.add(mapToToadGetDto(toad));
-        }
-        return toadGetDtoList;
+    public List<ToadResponse> mapToToadResponseList(List<Toad> toads) {
+        return toads
+                .stream()
+                .map(this::mapToToadResponse)
+                .collect(Collectors.toList());
     }
 }

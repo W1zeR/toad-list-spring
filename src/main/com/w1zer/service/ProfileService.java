@@ -2,9 +2,8 @@ package main.com.w1zer.service;
 
 import main.com.w1zer.exception.NotFoundException;
 import main.com.w1zer.exception.ProfileAlreadyExistsException;
-import main.com.w1zer.model.ProfileGetDto;
-import main.com.w1zer.model.ProfilePatchDto;
-import main.com.w1zer.model.ProfilePostDto;
+import main.com.w1zer.model.ProfileResponse;
+import main.com.w1zer.model.ProfileRequest;
 import main.com.w1zer.repository.ProfileRepository;
 import org.springframework.stereotype.Service;
 
@@ -20,12 +19,15 @@ public class ProfileService {
         this.profileMappingService = profileMappingService;
     }
 
-    public List<ProfileGetDto> getAll(){
-        return profileMappingService.mapToProfileGetDtoList(profileRepository.getAll());
+    public List<ProfileResponse> getAll(String login) {
+        if (login != null) {
+            return profileMappingService.mapToProfileResponseList(profileRepository.getByLogin(login));
+        }
+        return profileMappingService.mapToProfileResponseList(profileRepository.getAll());
     }
 
-    public ProfileGetDto getById(Long id) {
-        return profileMappingService.mapToProfileGetDto(profileRepository.getById(id));
+    public ProfileResponse getById(Long id) {
+        return profileMappingService.mapToProfileResponse(profileRepository.getById(id));
     }
 
     private boolean isProfileWithLoginExists(String login) {
@@ -37,11 +39,11 @@ public class ProfileService {
         }
     }
 
-    public void insert(ProfilePostDto profilePostDto) {
-        if (isProfileWithLoginExists(profilePostDto.getLogin())) {
+    public void insert(ProfileRequest profileRequest) {
+        if (isProfileWithLoginExists(profileRequest.getLogin())) {
             throw new ProfileAlreadyExistsException("Profile with this login already exists");
         }
-        profileRepository.insert(profileMappingService.mapToProfile(profilePostDto));
+        profileRepository.insert(profileMappingService.mapToProfile(profileRequest));
     }
 
     public void delete(Long id) {
@@ -49,8 +51,8 @@ public class ProfileService {
         profileRepository.delete(id);
     }
 
-    public void update(Long id, ProfilePatchDto profilePatchDto){
+    public void update(Long id, ProfileRequest profileRequest) {
         profileRepository.getById(id); // Checking if profile exists
-        profileRepository.update(profileMappingService.mapToProfile(id, profilePatchDto));
+        profileRepository.update(profileMappingService.mapToProfile(id, profileRequest));
     }
 }
