@@ -16,33 +16,33 @@ public class ToadController {
         this.toadService = toadService;
     }
 
-    @GetMapping("/toads/")
+    @GetMapping("/toads")
     public List<ToadResponse> getAll() {
         return toadService.getAll();
     }
 
-    @GetMapping("/toads/{id}/")
+    @GetMapping("/toads/{id}")
     public ToadResponse getById(@PathVariable Long id) {
         return toadService.getById(id);
     }
 
-    @GetMapping("/profiles/{id}/toads/")
+    @GetMapping("/profiles/{id}/toads")
     public List<ToadResponse> getByIdProfile(@PathVariable Long id) {
         return toadService.getByIdProfile(id);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/toads/")
+    @PostMapping("/toads")
     public void insert(@Valid @RequestBody ToadRequest toadRequest) {
         toadService.insert(toadRequest);
     }
 
-    @DeleteMapping("/toads/{id}/")
+    @DeleteMapping("/toads/{id}")
     public void delete(@PathVariable Long id) {
         toadService.delete(id);
     }
 
-    @PatchMapping("/toads/{id}/")
+    @PatchMapping("/toads/{id}")
     public void update(@PathVariable Long id, @Valid @RequestBody ToadRequest toadRequest) {
         toadService.update(id, toadRequest);
     }

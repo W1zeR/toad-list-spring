@@ -19,28 +19,28 @@ public class ProfileController {
         this.profileService = profileService;
     }
 
-    @GetMapping("/")
+    @GetMapping()
     public List<ProfileResponse> getAll(@RequestParam(required = false) String login) {
         return profileService.getAll(login);
     }
 
-    @GetMapping("/{id}/")
+    @GetMapping("/{id}")
     public ProfileResponse getById(@PathVariable Long id) {
         return profileService.getById(id);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/")
+    @PostMapping()
     public void insert(@Valid @RequestBody ProfileRequest profileRequest) {
         profileService.insert(profileRequest);
     }
 
-    @DeleteMapping("/{id}/")
+    @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         profileService.delete(id);
     }
 
-    @PatchMapping("/{id}/")
+    @PatchMapping("/{id}")
     public void update(@PathVariable Long id, @Valid @RequestBody ProfileRequest profileRequest) {
         profileService.update(id, profileRequest);
     }
