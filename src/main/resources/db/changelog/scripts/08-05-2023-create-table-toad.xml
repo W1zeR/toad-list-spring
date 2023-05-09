@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet id="08-05-2023-create-table-toad" author="w1zer">
+        <createTable tableName="toad">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="varchar(50)"/>
+            <column name="weight" type="bigint"/>
+            <column name="length" type="number(5,2)"/>
+            <column name="birthday" type="date"/>
+            <column name="description" type="varchar(150)"/>
+            <column name="id_profile" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="id_profile"
+                                 baseTableName="toad"
+                                 constraintName="fk_toad_to_profile"
+                                 referencedColumnNames="id"
+                                 referencedTableName="profile"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+</databaseChangeLog>

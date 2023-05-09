@@ -6,7 +6,7 @@ server:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/toadlist
+    url: jdbc:postgresql://localhost:5432/toadlist-spring
     username: me
     password: 123
   mvc:
