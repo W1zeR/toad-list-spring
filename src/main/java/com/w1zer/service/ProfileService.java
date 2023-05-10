@@ -50,14 +50,14 @@ public class ProfileService {
     }
 
     public void delete(Long id) {
-        if (!profileRepository.existsById(id)){
+        if (!profileRepository.existsById(id)) {
             throw new NotFoundException("Profile with id '%d' not found".formatted(id));
         }
         profileRepository.deleteById(id);
     }
 
     public ProfileResponse update(Long id, ProfileRequest profileRequest) {
-        if (!profileRepository.existsById(id)){
+        if (!profileRepository.existsById(id)) {
             throw new NotFoundException("Profile with id '%d' not found".formatted(id));
         }
         String login = profileRequest.getLogin();

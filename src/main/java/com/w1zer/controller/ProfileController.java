@@ -22,7 +22,7 @@ public class ProfileController {
         this.profileService = profileService;
     }
 
-    @GetMapping()
+    @GetMapping
     public List<ProfileResponse> getAll(
             @RequestParam(required = false)
             @Size(min = 3, max = 50, message = "Login must contain from 3 to 50 characters")
@@ -35,7 +35,7 @@ public class ProfileController {
         return profileService.getById(id);
     }
 
-    @PostMapping()
+    @PostMapping
     public ProfileResponse insert(@Valid @RequestBody ProfileRequest profileRequest) {
         return profileService.insert(profileRequest);
     }

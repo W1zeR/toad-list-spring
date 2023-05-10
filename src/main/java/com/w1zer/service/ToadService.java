@@ -41,14 +41,14 @@ public class ToadService {
     }
 
     public void delete(Long id) {
-        if (!toadRepository.existsById(id)){
+        if (!toadRepository.existsById(id)) {
             throw new NotFoundException("Toad with id '%d' not found".formatted(id));
         }
         toadRepository.deleteById(id);
     }
 
     public ToadResponse update(Long id, ToadRequest toadRequest) {
-        if (!toadRepository.existsById(id)){
+        if (!toadRepository.existsById(id)) {
             throw new NotFoundException("Toad with id '%d' not found".formatted(id));
         }
         Toad toad = toadRepository.save(toadMappingService.mapToToad(id, toadRequest));
