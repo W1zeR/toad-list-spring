@@ -6,6 +6,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProfileRepository extends CrudRepository<Profile, Long> {
@@ -15,7 +16,7 @@ public interface ProfileRepository extends CrudRepository<Profile, Long> {
 
     boolean existsByLogin(String login);
 
-    Profile findProfileById(Long id);
+    Optional<Profile> findProfileById(Long id);
 
-    Profile findProfileByLogin(String login);
+    Optional<Profile> findProfileByLogin(String login);
 }

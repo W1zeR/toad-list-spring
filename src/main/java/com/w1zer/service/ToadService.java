@@ -24,10 +24,9 @@ public class ToadService {
     }
 
     public ToadResponse getById(Long id) {
-        Toad toad = toadRepository.findToadById(id);
-        if (toad == null) {
-            throw new NotFoundException("Toad with id '%d' not found".formatted(id));
-        }
+        Toad toad = toadRepository.findToadById(id).orElseThrow(
+                () -> new NotFoundException("Toad with id '%d' not found".formatted(id))
+        );
         return toadMappingService.mapToToadResponse(toad);
     }
 

@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @Validated
+@RequestMapping("/api")
 public class ToadController {
     private final ToadService toadService;
 

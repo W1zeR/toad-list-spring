@@ -6,6 +6,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ToadRepository extends CrudRepository<Toad, Long> {
@@ -13,7 +14,7 @@ public interface ToadRepository extends CrudRepository<Toad, Long> {
     @NonNull
     List<Toad> findAll();
 
-    Toad findToadById(Long id);
+    Optional<Toad> findToadById(Long id);
 
     List<Toad> findToadsByIdProfile(Long idProfile);
 }
