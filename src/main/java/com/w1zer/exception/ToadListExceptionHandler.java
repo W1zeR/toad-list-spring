@@ -15,6 +15,8 @@ import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class ToadListExceptionHandler {
+    private static final String INVALID_FORMAT = "Invalid format";
+
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<String> handleNotFoundException(NotFoundException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -44,9 +46,13 @@ public class ToadListExceptionHandler {
     }
 
     @ExceptionHandler(InvalidFormatException.class)
-    public ResponseEntity<String> handleProfileAlreadyExistsException() {
-        String message = "Invalid format";
-        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<String> handleInvalidFormatException() {
+        return new ResponseEntity<>(INVALID_FORMAT, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AuthException.class)
+    public ResponseEntity<String> handleAuthException(AuthException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 }
 

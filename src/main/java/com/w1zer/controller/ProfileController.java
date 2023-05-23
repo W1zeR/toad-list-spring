@@ -11,6 +11,8 @@ import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.util.List;
 
+import static com.w1zer.constants.ValidationConstants.*;
+
 @RestController
 @Validated
 @RequestMapping("/api/profiles")
@@ -25,13 +27,13 @@ public class ProfileController {
     @GetMapping
     public List<ProfileResponse> getAll(
             @RequestParam(required = false)
-            @Size(min = 3, max = 50, message = "Login must contain from 3 to 50 characters")
+            @Size(min = LOGIN_MIN_SIZE, max = LOGIN_MAX_SIZE, message = LOGIN_SIZE_MESSAGE)
             String login) {
         return profileService.getAll(login);
     }
 
     @GetMapping("/{id}")
-    public ProfileResponse getById(@PathVariable @Positive(message = "Id must be positive number") Long id) {
+    public ProfileResponse getById(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
         return profileService.getById(id);
     }
 
@@ -41,13 +43,13 @@ public class ProfileController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable @Positive(message = "Id must be positive number") Long id) {
+    public void delete(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
         profileService.delete(id);
     }
 
     @PutMapping("/{id}")
     public ProfileResponse update(
-            @PathVariable @Positive(message = "Id must be positive number") Long id,
+            @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id,
             @Valid @RequestBody ProfileRequest profileRequest) {
         return profileService.update(id, profileRequest);
     }

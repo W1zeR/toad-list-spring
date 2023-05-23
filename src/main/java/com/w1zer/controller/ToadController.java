@@ -10,6 +10,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
+import static com.w1zer.constants.ValidationConstants.ID_POSITIVE_MESSAGE;
+
 @RestController
 @Validated
 @RequestMapping("/api")
@@ -26,12 +28,12 @@ public class ToadController {
     }
 
     @GetMapping("/toads/{id}")
-    public ToadResponse getById(@PathVariable @Positive(message = "Id must be positive number") Long id) {
+    public ToadResponse getById(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
         return toadService.getById(id);
     }
 
     @GetMapping("/profiles/{id}/toads")
-    public List<ToadResponse> getByIdProfile(@PathVariable @Positive(message = "Id must be positive number") Long id) {
+    public List<ToadResponse> getByIdProfile(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
         return toadService.getByIdProfile(id);
     }
 
@@ -41,13 +43,13 @@ public class ToadController {
     }
 
     @DeleteMapping("/toads/{id}")
-    public void delete(@PathVariable @Positive(message = "Id must be positive number") Long id) {
+    public void delete(@PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id) {
         toadService.delete(id);
     }
 
     @PutMapping("/toads/{id}")
     public ToadResponse update(
-            @PathVariable @Positive(message = "Id must be positive number") Long id,
+            @PathVariable @Positive(message = ID_POSITIVE_MESSAGE) Long id,
             @Valid @RequestBody ToadRequest toadRequest) {
         return toadService.update(id, toadRequest);
     }

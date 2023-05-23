@@ -1,15 +1,15 @@
-package com.w1zer.service;
+package com.w1zer.mapping;
 
 import com.w1zer.model.ProfileResponse;
 import com.w1zer.entity.Profile;
 import com.w1zer.model.ProfileRequest;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
-public class ProfileMappingService {
+@Component
+public class ProfileMapper {
     public ProfileResponse mapToProfileResponse(Profile profile) {
         return ProfileResponse
                 .builder()

@@ -1,7 +1,6 @@
 package com.w1zer.security;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,36 +17,42 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Set;
 
+import static com.w1zer.constants.SecurityConstants.TOAD_LIST_ROLES;
+
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
+    private static final String AUTHORIZATION = "Authorization";
+    private static final String BEARER = "Bearer ";
+    private static final int BEGIN_INDEX = 7;
+
+    private final JwtProvider jwtProvider;
+
+    public JwtRequestFilter(JwtProvider jwtProvider) {
+        this.jwtProvider = jwtProvider;
+    }
+
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
                                     @NonNull FilterChain chain) throws ServletException, IOException {
-        try {
-            String jwtToken = getJwtFromRequest(request);
-            if (jwtToken == null) {
-                logger.warn("Incorrect Jwt Token");
-            } else {
-                setSecurityContextHolderAuthentication(request, jwtToken);
-            }
-        } catch (Exception e) {
-            logger.error("Error in JwtRequestFilter", e);
+        String jwtToken = getJwtTokenFromRequest(request);
+        if (jwtToken != null && jwtProvider.validateAccessToken(jwtToken)) {
+            setSecurityContextHolderAuthentication(request, jwtToken);
         }
         chain.doFilter(request, response);
     }
 
-    private String getJwtFromRequest(HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        if (StringUtils.hasText(token) && token.startsWith("Bearer ")) {
-            return token.substring(7);
+    private String getJwtTokenFromRequest(HttpServletRequest request) {
+        String jwtToken = request.getHeader(AUTHORIZATION);
+        if (StringUtils.hasText(jwtToken) && jwtToken.startsWith(BEARER)) {
+            return jwtToken.substring(BEGIN_INDEX);
         }
         return null;
     }
 
     private void setSecurityContextHolderAuthentication(HttpServletRequest request, String jwtToken) {
-        Claims claims = Jwts.parser().setSigningKey("secretKey").parseClaimsJws(jwtToken).getBody();
+        Claims claims = jwtProvider.getAccessClaims(jwtToken);
         String username = claims.getIssuer();
-        String role = claims.get("amm_role").toString();
+        String role = claims.get(TOAD_LIST_ROLES).toString();
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                     username, null, Set.of(new SimpleGrantedAuthority(role)));

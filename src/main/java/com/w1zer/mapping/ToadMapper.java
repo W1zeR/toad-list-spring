@@ -1,15 +1,15 @@
-package com.w1zer.service;
+package com.w1zer.mapping;
 
 import com.w1zer.entity.Toad;
 import com.w1zer.model.ToadRequest;
 import com.w1zer.model.ToadResponse;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
-public class ToadMappingService {
+@Component
+public class ToadMapper {
     public ToadResponse mapToToadResponse(Toad toad) {
         return ToadResponse
                 .builder()

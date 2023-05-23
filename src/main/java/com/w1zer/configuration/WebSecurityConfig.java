@@ -3,6 +3,8 @@ package com.w1zer.configuration;
 import com.w1zer.security.JwtRequestFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -13,7 +15,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig {
+    private static final String AUTH_ALL = "/api/auth/**";
+    private static final String TOADS_ALL = "/api/toads/**";
+    private static final String TOADS = "/api/toads";
+    private static final String PROFILES_ALL = "/api/profiles/**";
+    private static final String PROFILES = "/api/profiles";
+    private static final String USER = "USER";
+
     private final JwtRequestFilter jwtRequestFilter;
 
     public WebSecurityConfig(JwtRequestFilter jwtRequestFilter) {
@@ -29,11 +39,10 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .authorizeRequests()
-                .antMatchers("/", "/favicon.ico", "/**/*.png", "/**/*.gif", "/**/*.svg", "/**/*.jpg",
-                        "/**/*.html", "/**/*.css", "/**/*.js").permitAll()
-                .antMatchers("/swagger-resources/**", "/swagger-ui.html", "/v2/api-docs").permitAll()
-                .antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/api/toads/**", "/api/profiles/**").hasRole("USER")
+                .antMatchers(AUTH_ALL).permitAll()
+                .antMatchers(HttpMethod.POST, PROFILES).permitAll()
+                .antMatchers(TOADS_ALL, PROFILES_ALL).hasRole(USER)
+                .antMatchers(HttpMethod.GET, PROFILES, TOADS).access("hasIpAddress('127.0.0.1')")
                 .and()
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
