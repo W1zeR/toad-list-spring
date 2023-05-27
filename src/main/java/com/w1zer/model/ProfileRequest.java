@@ -6,7 +6,14 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import static com.w1zer.constants.ValidationConstants.*;
+import static com.w1zer.constants.ValidationConstants.LOGIN_MAX_SIZE;
+import static com.w1zer.constants.ValidationConstants.LOGIN_MIN_SIZE;
+import static com.w1zer.constants.ValidationConstants.LOGIN_NOT_BLANK_MESSAGE;
+import static com.w1zer.constants.ValidationConstants.LOGIN_SIZE_MESSAGE;
+import static com.w1zer.constants.ValidationConstants.PASSWORD_MAX_SIZE;
+import static com.w1zer.constants.ValidationConstants.PASSWORD_MIN_SIZE;
+import static com.w1zer.constants.ValidationConstants.PASSWORD_NOT_BLANK_MESSAGE;
+import static com.w1zer.constants.ValidationConstants.PASSWORD_SIZE_MESSAGE;
 
 @Data
 @Builder
