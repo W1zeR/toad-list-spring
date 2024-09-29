@@ -21,3 +21,4 @@
 
 - Auth with JWT
 - Data validation with annotations
+- Logging with SLF4J
